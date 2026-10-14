@@ -196,15 +196,17 @@ body {
 }
 
 /* Sticky first column (habit name column) */
+
 .col-habit {
   position: sticky;
   left: 0;
   z-index: 2;
-  width: 200px;
-  min-width: 200px;
+  width: 350px;
+  min-width: 350px;
   text-align: left;
   background: var(--surface);
 }
+
 
 .habit-table thead .col-habit {
   background: var(--primary);
@@ -333,13 +335,17 @@ td[data-action="numeric-click"]:not(.cell-future):not(.cell-pre-creation):hover 
   min-width: 0;
 }
 
+
+
 .habit-name {
   font-size: 0.85em;
   font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  overflow: visible;
+  overflow-wrap: anywhere;
 }
+
+
 
 .habit-category {
   font-size: 0.7em;
