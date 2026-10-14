@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Habit Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ===== TOP NAVIGATION BAR ===== -->
+  <nav id="main-nav" aria-label="Main navigation">
+    <div class="nav-brand">Habit Tracker</div>
+    <div class="nav-tabs" role="tablist" aria-label="App sections">
+      <button role="tab" id="tab-btn-tracker"   data-tab="tracker"   aria-selected="true"  class="nav-tab active">Tracker</button>
+      <button role="tab" id="tab-btn-dashboard" data-tab="dashboard" aria-selected="false" class="nav-tab">Dashboard</button>
+      <button role="tab" id="tab-btn-gate"      data-tab="gate"      aria-selected="false" class="nav-tab">GATE Log</button>
+      <button role="tab" id="tab-btn-sleep"     data-tab="sleep"     aria-selected="false" class="nav-tab">Sleep</button>
+      <button role="tab" id="tab-btn-settings"  data-tab="settings"  aria-selected="false" class="nav-tab">Settings</button>
+    </div>
+  </nav>
+
+  <!-- ===== MAIN CONTENT AREA ===== -->
+  <main id="app-content">
+
+    <!-- TRACKER TAB -->
+    <section id="tab-tracker" class="tab-section active" role="tabpanel" aria-labelledby="tab-btn-tracker">
+      <div id="tracker-controls">
+        <!-- Month nav and habit actions injected by renderTrackerControls() -->
+      </div>
+      <div id="tracker-grid-wrap">
+        <!-- Habit grid table injected by renderTracker() -->
+      </div>
+    </section>
+
+    <!-- DASHBOARD TAB -->
+    <section id="tab-dashboard" class="tab-section" role="tabpanel" aria-labelledby="tab-btn-dashboard">
+      <div id="dashboard-content">
+        <!-- Injected by renderDashboard() -->
+      </div>
+    </section>
+
+    <!-- GATE LOG TAB -->
+    <section id="tab-gate" class="tab-section" role="tabpanel" aria-labelledby="tab-btn-gate">
+      <div id="gate-content">
+        <!-- Injected by renderGateTab() -->
+      </div>
+    </section>
+
+    <!-- SLEEP TAB -->
+    <section id="tab-sleep" class="tab-section" role="tabpanel" aria-labelledby="tab-btn-sleep">
+      <div id="sleep-content">
+        <!-- Injected by renderSleepTab() -->
+      </div>
+    </section>
+
+    <!-- SETTINGS TAB -->
+    <section id="tab-settings" class="tab-section" role="tabpanel" aria-labelledby="tab-btn-settings">
+      <div id="settings-content">
+        <!-- Injected by renderSettings() -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== REUSABLE MODAL ===== -->
+  <div id="modal-container" class="modal-overlay hidden"
+       role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 id="modal-title">Modal</h2>
+        <button id="modal-close" class="icon-btn modal-close-btn" aria-label="Close modal">&times;</button>
+      </div>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- ===== CONFIRM DIALOG ===== -->
+  <div id="confirm-dialog" class="modal-overlay hidden"
+       role="alertdialog" aria-modal="true" aria-labelledby="confirm-message">
+    <div class="modal-box confirm-box">
+      <p id="confirm-message"></p>
+      <div class="confirm-actions">
+        <button id="confirm-ok"     class="btn btn-danger">Confirm</button>
+        <button id="confirm-cancel" class="btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== NUMERIC VALUE POPUP ===== -->
+  <div id="numeric-popup" class="numeric-popup hidden" role="dialog" aria-label="Enter value">
+    <label for="numeric-input" class="sr-only">Value</label>
+    <input type="number" id="numeric-input" min="0" aria-label="Numeric value">
+    <button id="numeric-ok"     class="btn btn-primary btn-sm">OK</button>
+    <button id="numeric-cancel" class="btn btn-sm" aria-label="Cancel">✕</button>
+  </div>
+
+  <!-- Chart.js from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" defer></script>
+  <!-- App logic -->
+  <script src="app.js" defer></script>
+
+</body>
+</html>

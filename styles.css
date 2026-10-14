@@ -1,0 +1,878 @@
+/* ============================================================
+   HABIT TRACKER — styles.css
+   ============================================================ */
+
+/* === Custom Properties === */
+:root {
+  --bg:              #f8f9fa;
+  --surface:         #ffffff;
+  --primary:         #4a6fa5;
+  --primary-dark:    #35507a;
+  --text:            #212529;
+  --text-muted:      #6c757d;
+  --border:          #dee2e6;
+  --cell-done:       #c8e6c9;
+  --cell-done-text:  #1b5e20;
+  --cell-miss:       #fff3f3;
+  --cell-future:     #f0f0f0;
+  --cell-today-col:  #fff9c4;
+  --danger:          #dc3545;
+  --radius:          4px;
+  --nav-height:      52px;
+}
+
+/* === Reset & Base === */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+               Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+  /* Prevent horizontal overflow at the body level — only the grid container scrolls */
+  overflow-x: hidden;
+}
+
+/* === Screen-reader only utility === */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ============================================================
+   NAVIGATION BAR
+   ============================================================ */
+#main-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 16px;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.nav-brand {
+  font-weight: 700;
+  font-size: 1.1em;
+  white-space: nowrap;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.nav-tabs {
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+  flex: 1;
+  scrollbar-width: none; /* Firefox */
+}
+.nav-tabs::-webkit-scrollbar { display: none; }
+
+.nav-tab {
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.8);
+  padding: 8px 14px;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  font-size: 0.9em;
+  transition: color 0.15s, border-color 0.15s;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+.nav-tab:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.1);
+}
+.nav-tab.active {
+  color: #fff;
+  border-bottom-color: #fff;
+  font-weight: 600;
+}
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+#app-content {
+  margin-top: var(--nav-height);
+  padding: 16px;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Tab sections — hidden by default, shown when .active */
+.tab-section {
+  display: none;
+}
+.tab-section.active {
+  display: block;
+}
+
+/* ============================================================
+   TRACKER CONTROLS (above the grid)
+   ============================================================ */
+#tracker-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.tracker-controls-left,
+.tracker-controls-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+#month-display {
+  font-weight: 600;
+  font-size: 1em;
+  min-width: 130px;
+  text-align: center;
+}
+
+/* ============================================================
+   HABIT GRID WRAPPER (scrollable)
+   ============================================================ */
+#tracker-grid-wrap {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: calc(100vh - var(--nav-height) - 100px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+/* ============================================================
+   HABIT TABLE
+   ============================================================ */
+.habit-table {
+  table-layout: fixed;
+  border-collapse: collapse;
+  min-width: max-content;
+  width: 100%;
+}
+
+/* Sticky corner — must sit above both the sticky column and sticky header */
+.sticky-corner {
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 4 !important;
+  background: var(--primary) !important;
+  color: #fff;
+}
+
+/* Sticky header row */
+.habit-table thead tr {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
+
+/* Sticky first column (habit name column) */
+.col-habit {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  width: 200px;
+  min-width: 200px;
+  text-align: left;
+  background: var(--surface);
+}
+
+.habit-table thead .col-habit {
+  background: var(--primary);
+  color: #fff;
+  z-index: 4;
+}
+
+/* All header cells */
+.habit-table th {
+  background: var(--primary);
+  color: #fff;
+  font-weight: 600;
+  padding: 0 4px;
+  height: 44px;
+  border: 1px solid rgba(255,255,255,0.25);
+  vertical-align: middle;
+}
+
+/* All data cells */
+.habit-table td {
+  border: 1px solid var(--border);
+  padding: 0;
+  height: 36px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* Day columns */
+.col-day {
+  width: 44px;
+  min-width: 44px;
+  max-width: 44px;
+}
+
+/* Day header inner layout */
+.day-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
+  font-size: 0.8em;
+}
+.day-name {
+  font-size: 0.75em;
+  opacity: 0.85;
+}
+.day-num {
+  font-size: 1.1em;
+  font-weight: 700;
+}
+
+/* === Today column highlight === */
+.col-today {
+  background-color: var(--cell-today-col) !important;
+}
+.habit-table thead .col-today {
+  background-color: #e6d200 !important;
+  color: #212529 !important;
+}
+
+/* === Future column === */
+.col-future {
+  background-color: var(--cell-future);
+  pointer-events: none;
+  color: var(--text-muted);
+}
+
+/* === Cell states === */
+.cell-done {
+  background-color: var(--cell-done);
+}
+.cell-miss {
+  background-color: var(--cell-miss);
+}
+.cell-future,
+.cell-pre-creation {
+  background-color: var(--cell-future);
+  pointer-events: none;
+}
+
+/* Checkbox inside cells */
+.habit-table input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--primary);
+  display: block;
+  margin: 0 auto;
+}
+.habit-table input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+/* Numeric value display */
+.numeric-val {
+  font-size: 0.85em;
+  color: var(--text);
+  cursor: pointer;
+}
+td[data-action="numeric-click"]:not(.cell-future):not(.cell-pre-creation) {
+  cursor: pointer;
+}
+td[data-action="numeric-click"]:not(.cell-future):not(.cell-pre-creation):hover {
+  filter: brightness(0.95);
+}
+
+/* ============================================================
+   HABIT ROW — name cell and action icons
+   ============================================================ */
+.habit-cell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px;
+  gap: 4px;
+  height: 100%;
+}
+
+.habit-name-block {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex: 1;
+  min-width: 0;
+}
+
+.habit-name {
+  font-size: 0.85em;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.habit-category {
+  font-size: 0.7em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.archived-badge {
+  font-size: 0.65em;
+  background: #e9ecef;
+  color: var(--text-muted);
+  padding: 1px 4px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.row-actions {
+  display: flex;
+  gap: 2px;
+  visibility: hidden;
+  flex-shrink: 0;
+}
+
+.habit-row:hover .row-actions {
+  visibility: visible;
+}
+
+/* Archived row styling */
+.habit-row.is-archived .habit-name {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+.habit-row.is-archived td {
+  opacity: 0.6;
+}
+.habit-row.is-archived .col-habit {
+  opacity: 1; /* keep name readable */
+  background: #f8f9fa;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.9em;
+  line-height: 1.4;
+  white-space: nowrap;
+  transition: background 0.1s, border-color 0.1s;
+}
+.btn:hover {
+  background: #e9ecef;
+}
+.btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+.btn-primary:hover {
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+  border-color: var(--danger);
+}
+.btn-danger:hover {
+  background: #c82333;
+  border-color: #c82333;
+}
+.btn-sm {
+  padding: 3px 8px;
+  font-size: 0.82em;
+}
+.btn-outline {
+  background: transparent;
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.btn-outline:hover {
+  background: rgba(74,111,165,0.08);
+}
+
+/* Icon buttons (small action buttons in rows) */
+.icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: var(--radius);
+  font-size: 0.9em;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: background 0.1s, color 0.1s;
+}
+.icon-btn:hover {
+  background: rgba(0,0,0,0.08);
+  color: var(--text);
+}
+.icon-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+.btn-danger-icon:hover {
+  background: rgba(220,53,69,0.12);
+  color: var(--danger);
+}
+
+/* Modal close button */
+.modal-close-btn {
+  font-size: 1.5em;
+  line-height: 1;
+  padding: 2px 6px;
+}
+
+/* ============================================================
+   MODAL OVERLAY
+   ============================================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+.hidden {
+  display: none !important;
+}
+
+.modal-box {
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 24px;
+  min-width: 320px;
+  max-width: 90vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  gap: 8px;
+}
+.modal-header h2 {
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
+/* ============================================================
+   CONFIRM DIALOG
+   ============================================================ */
+.confirm-box {
+  max-width: 380px;
+  min-width: 280px;
+}
+.confirm-box p {
+  margin-bottom: 16px;
+  font-size: 0.95em;
+}
+.confirm-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* ============================================================
+   NUMERIC POPUP
+   ============================================================ */
+.numeric-popup {
+  position: fixed;
+  z-index: 300;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.numeric-popup input[type="number"] {
+  width: 80px;
+  padding: 4px 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.9em;
+}
+
+/* ============================================================
+   FORMS (shared across modals and tabs)
+   ============================================================ */
+.form-group {
+  margin-bottom: 12px;
+}
+.form-group label {
+  display: block;
+  font-size: 0.87em;
+  font-weight: 500;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.9em;
+  background: var(--surface);
+  color: var(--text);
+  transition: border-color 0.15s;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(74,111,165,0.2);
+}
+.form-group textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+.form-row {
+  display: flex;
+  gap: 12px;
+}
+.form-row .form-group {
+  flex: 1;
+}
+.radio-group {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 400;
+  cursor: pointer;
+  margin: 0;
+}
+.radio-group input[type="radio"] {
+  width: auto;
+  margin: 0;
+}
+.form-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+.form-error {
+  color: var(--danger);
+  font-size: 0.82em;
+  margin-top: 4px;
+}
+.form-hint {
+  color: var(--text-muted);
+  font-size: 0.8em;
+  margin-top: 3px;
+}
+
+/* ============================================================
+   DASHBOARD — stat cards
+   ============================================================ */
+.stat-cards {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  min-width: 150px;
+  flex: 1;
+}
+.stat-card .stat-value {
+  font-size: 2em;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.1;
+}
+.stat-card .stat-label {
+  font-size: 0.8em;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.stat-card .stat-detail {
+  font-size: 0.78em;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.dashboard-section {
+  margin-bottom: 32px;
+}
+.dashboard-section h3 {
+  font-size: 0.95em;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+}
+
+.chart-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  max-width: 700px;
+}
+.chart-error {
+  color: var(--text-muted);
+  font-size: 0.9em;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+/* Streak table */
+.streak-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88em;
+}
+.streak-table th,
+.streak-table td {
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  text-align: left;
+}
+.streak-table th {
+  background: #f0f4fa;
+  font-weight: 600;
+}
+.streak-table tr:nth-child(even) td {
+  background: #fafbfc;
+}
+
+/* ============================================================
+   GATE LOG & SLEEP — data tables
+   ============================================================ */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88em;
+  margin-top: 16px;
+}
+.data-table th,
+.data-table td {
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+.data-table th {
+  background: #f0f4fa;
+  font-weight: 600;
+}
+.data-table tr:nth-child(even) td {
+  background: #fafbfc;
+}
+.data-table .week-summary-row td {
+  background: #e8f0fe;
+  font-weight: 600;
+  font-size: 0.85em;
+  color: var(--primary-dark);
+}
+
+/* ============================================================
+   SETTINGS TAB
+   ============================================================ */
+.settings-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  max-width: 600px;
+}
+.settings-section h3 {
+  font-size: 0.95em;
+  font-weight: 600;
+  margin-bottom: 14px;
+  color: var(--text);
+}
+
+.notice-box {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  font-size: 0.85em;
+  color: #664d03;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+/* ============================================================
+   EMPTY STATES
+   ============================================================ */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-muted);
+}
+.empty-state p {
+  margin-top: 8px;
+  font-size: 0.9em;
+}
+
+/* ============================================================
+   SECTION HEADINGS (shared)
+   ============================================================ */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.section-header h2 {
+  font-size: 1.1em;
+  font-weight: 600;
+}
+.section-header h3 {
+  font-size: 0.95em;
+  font-weight: 600;
+}
+
+/* ============================================================
+   RESPONSIVE — 768px breakpoint
+   ============================================================ */
+@media (max-width: 768px) {
+  #app-content {
+    padding: 10px;
+  }
+
+  /* Nav tabs must scroll horizontally, not wrap, so brand + tabs fit on one line */
+  .nav-tabs {
+    overflow-x: auto;
+    white-space: nowrap;
+    flex-shrink: 1;
+  }
+
+  /* Habit name column narrower on mobile */
+  .col-habit {
+    width: 160px;
+    min-width: 160px;
+  }
+
+  /* Narrower day columns on mobile */
+  .col-day {
+    width: 36px;
+    min-width: 36px;
+    max-width: 36px;
+  }
+
+  .stat-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .tracker-controls-left,
+  .tracker-controls-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  /* Settings and modal boxes take full width */
+  .settings-section,
+  .modal-box {
+    min-width: unset;
+    width: 100%;
+    max-width: 100%;
+    padding: 14px;
+  }
+}
+
+@media (max-width: 375px) {
+  /* Extra-tight breakpoint: shrink brand text to preserve tab space */
+  .nav-brand {
+    font-size: 0.95em;
+  }
+
+  .nav-tab {
+    padding: 8px 10px;
+    font-size: 0.82em;
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-cards {
+    grid-template-columns: 1fr;
+  }
+  .chart-wrap {
+    max-width: 100%;
+  }
+}
