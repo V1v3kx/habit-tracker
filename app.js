@@ -21,7 +21,13 @@
    ============================================================ */
 
 /* === SECTION 1: CONSTANTS & STATE === */
+const SUPABASE_URL = 'https://fbfxbbtfzyfbvqsofwgk.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_xU0qdssam7NjY0FAEenb8w_AYXVQjPE';
 
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
 const STORAGE_KEYS = {
   habits:   'habitTracker_habits',
   records:  'habitTracker_records',
