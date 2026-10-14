@@ -28,6 +28,35 @@ const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_PUBLISHABLE_KEY
 );
+
+const SUPABASE_ROW_ID = 'main';
+
+async function syncDataToSupabase() {
+  const data = {
+    habits: STATE.habits,
+    records: STATE.records,
+    settings: STATE.settings,
+    gateLog: STATE.gateLog,
+    sleepLog: STATE.sleepLog,
+  };
+
+  const { error } = await supabaseClient
+    .from('habit_tracker_data')
+    .upsert({
+      id: SUPABASE_ROW_ID,
+      data,
+      updated_at: new Date().toISOString(),
+    });
+
+  if (error) {
+    console.error('Supabase sync failed:', error.message);
+    return false;
+  }
+
+  console.log('Supabase sync successful.');
+  return true;
+}
+
 const STORAGE_KEYS = {
   habits:   'habitTracker_habits',
   records:  'habitTracker_records',
