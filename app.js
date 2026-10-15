@@ -31,6 +31,7 @@ const supabaseClient = window.supabase.createClient(
 
 const SUPABASE_ROW_ID = 'main';
 
+
 async function syncDataToSupabase() {
   const data = {
     habits: STATE.habits,
@@ -40,7 +41,23 @@ async function syncDataToSupabase() {
     sleepLog: STATE.sleepLog,
   };
 
-   
+  const { error } = await supabaseClient
+    .from('habit_tracker_data')
+    .upsert({
+      id: SUPABASE_ROW_ID,
+      data,
+      updated_at: new Date().toISOString(),
+    });
+
+  if (error) {
+    console.error('Supabase sync failed:', error.message);
+    return false;
+  }
+
+  console.log('Supabase sync successful.');
+  return true;
+}
+
 async function loadDataFromSupabase() {
   const { data, error } = await supabaseClient
     .from('habit_tracker_data')
@@ -65,24 +82,6 @@ async function loadDataFromSupabase() {
   STATE.gateLog = cloudData.gateLog ?? STATE.gateLog;
   STATE.sleepLog = cloudData.sleepLog ?? STATE.sleepLog;
 
-  return true;
-}
-
-
-  const { error } = await supabaseClient
-    .from('habit_tracker_data')
-    .upsert({
-      id: SUPABASE_ROW_ID,
-      data,
-      updated_at: new Date().toISOString(),
-    });
-
-  if (error) {
-    console.error('Supabase sync failed:', error.message);
-    return false;
-  }
-
-  console.log('Supabase sync successful.');
   return true;
 }
 
