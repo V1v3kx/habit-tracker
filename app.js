@@ -312,16 +312,13 @@ function saveHabits() {
 }
 
 
-
 function saveRecords() {
   try {
     localStorage.setItem(STORAGE_KEYS.records, JSON.stringify(STATE.records));
   } catch (e) {
     showStorageWarning();
   }
-  syncDataToSupabase();
 }
-
 
 function saveSettings() {
   try {
@@ -1271,20 +1268,30 @@ function renderDashboard() {
   const monthStats   = getMonthStats(STATE.currentYear, STATE.currentMonth);
   const overallStats = getOverallStats();
 
-  // Habit streak rows
-  const activeHabits = STATE.habits
-    .filter(h => !h.archived)
-    .sort((a, b) => a.order - b.order);
+  
 
-  const streakRows = activeHabits.map(h => {
+// Habit streak rows
+const activeHabits = STATE.habits
+  .filter(h => !h.archived)
+  .map(h => {
     const { current, best } = getHabitStreak(h.id);
-    return `
-      <tr>
-        <td>${escapeHtml(h.name)}</td>
-        <td>${current} day${current !== 1 ? 's' : ''}</td>
-        <td>${best} day${best !== 1 ? 's' : ''}</td>
-      </tr>`;
-  }).join('');
+    return { habit: h, current, best };
+  })
+  .sort((a, b) =>
+  a.current - b.current ||
+  a.best - b.best ||
+  a.habit.order - b.habit.order
+);
+
+const streakRows = activeHabits.map(({ habit, current, best }) => {
+  return `
+    <tr>
+      <td>${escapeHtml(habit.name)}</td>
+      <td>${current} day${current !== 1 ? 's' : ''}</td>
+      <td>${best} day${best !== 1 ? 's' : ''}</td>
+    </tr>`;
+}).join('');
+
 
   // Chart availability check
   const chartAvailable = (typeof Chart !== 'undefined');
