@@ -352,8 +352,52 @@ function showStorageWarning() {
 
 /* === SECTION 4: INITIALIZATION === */
 
-function init() {
+// function init() {
+//   loadAllData();
+
+//   // Seed default habits if storage is empty
+//   if (STATE.habits.length === 0) {
+//     const today = todayStr();
+//     DEFAULT_HABITS.forEach((h, i) => {
+//       STATE.habits.push({
+//         id:           generateId(),
+//         name:         h.name,
+//         category:     h.category,
+//         order:        i,
+//         archived:     false,
+//         trackingType: 'boolean',
+//         unit:         '',
+//         dailyTarget:  null,
+//         createdAt:    today,
+//       });
+//     });
+//     saveHabits();
+//   }
+
+//   // Set current month to today
+//   const now = new Date();
+//   STATE.currentYear  = now.getFullYear();
+//   STATE.currentMonth = now.getMonth(); // 0-indexed
+
+//   // Render the tracker
+//   renderTrackerControls();
+//   renderTracker();
+
+//   // Wire up global event listeners
+//   attachGlobalListeners();
+// }
+
+
+async function init() {
   loadAllData();
+
+  // Load cloud data before rendering, keeping local data as fallback
+  const cloudLoaded = await loadDataFromSupabase();
+  console.log(
+    cloudLoaded
+      ? 'Loaded tracker data from Supabase.'
+      : 'No cloud data loaded; using local data.'
+  );
 
   // Seed default habits if storage is empty
   if (STATE.habits.length === 0) {
@@ -377,7 +421,7 @@ function init() {
   // Set current month to today
   const now = new Date();
   STATE.currentYear  = now.getFullYear();
-  STATE.currentMonth = now.getMonth(); // 0-indexed
+  STATE.currentMonth = now.getMonth();
 
   // Render the tracker
   renderTrackerControls();
@@ -386,6 +430,7 @@ function init() {
   // Wire up global event listeners
   attachGlobalListeners();
 }
+
 
 function attachGlobalListeners() {
   // Nav tab buttons
