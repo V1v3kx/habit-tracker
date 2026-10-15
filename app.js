@@ -312,13 +312,16 @@ function saveHabits() {
 }
 
 
+
 function saveRecords() {
   try {
     localStorage.setItem(STORAGE_KEYS.records, JSON.stringify(STATE.records));
   } catch (e) {
     showStorageWarning();
   }
+  syncDataToSupabase();
 }
+
 
 function saveSettings() {
   try {
