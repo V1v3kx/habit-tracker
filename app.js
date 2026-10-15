@@ -40,6 +40,35 @@ async function syncDataToSupabase() {
     sleepLog: STATE.sleepLog,
   };
 
+   
+async function loadDataFromSupabase() {
+  const { data, error } = await supabaseClient
+    .from('habit_tracker_data')
+    .select('data')
+    .eq('id', SUPABASE_ROW_ID)
+    .maybeSingle();
+
+  if (error) {
+    console.error('Supabase load failed:', error.message);
+    return false;
+  }
+
+  if (!data || !data.data) {
+    return false;
+  }
+
+  const cloudData = data.data;
+
+  STATE.habits = cloudData.habits ?? STATE.habits;
+  STATE.records = cloudData.records ?? STATE.records;
+  STATE.settings = cloudData.settings ?? STATE.settings;
+  STATE.gateLog = cloudData.gateLog ?? STATE.gateLog;
+  STATE.sleepLog = cloudData.sleepLog ?? STATE.sleepLog;
+
+  return true;
+}
+
+
   const { error } = await supabaseClient
     .from('habit_tracker_data')
     .upsert({
