@@ -301,13 +301,16 @@ function loadAllData() {
   }
 }
 
+
 function saveHabits() {
   try {
     localStorage.setItem(STORAGE_KEYS.habits, JSON.stringify(STATE.habits));
   } catch (e) {
     showStorageWarning();
   }
+  syncDataToSupabase();
 }
+
 
 function saveRecords() {
   try {
