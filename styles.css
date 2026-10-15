@@ -3,24 +3,24 @@
    ============================================================ */
 
 /* === Custom Properties === */
+
 :root {
-  --bg:              #f8f9fa;
-  --surface:         #ffffff;
-  --primary:         #4a6fa5;
-  --primary-dark:    #35507a;
-  --text:            #212529;
-  --text-muted:      #6c757d;
-  --border:          #dee2e6;
-  --cell-done:       #c8e6c9;
-  --cell-done-text:  #1b5e20;
-  --cell-miss:       #fff3f3;
-  --cell-future:     #f0f0f0;
-  --cell-today-col:  #fff9c4;
-  --danger:          #dc3545;
+  --bg:              #100B0D;
+  --surface:         #211317;
+  --primary:         #641220;
+  --primary-dark:    #45101B;
+  --text:            #E8DDE0;
+  --text-muted:      #B6A5AA;
+  --border:          #493039;
+  --cell-done:       #3B252D;
+  --cell-done-text:  #E8A5B0;
+  --cell-miss:       #321B22;
+  --cell-future:     #191114;
+  --cell-today-col:  #39202A;
+  --danger:          #A83246;
   --radius:          4px;
   --nav-height:      52px;
 }
-
 /* === Reset & Base === */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -708,13 +708,23 @@ td[data-action="numeric-click"]:not(.cell-future):not(.cell-pre-creation):hover 
   padding: 6px 10px;
   text-align: left;
 }
+
 .streak-table th {
-  background: #f0f4fa;
+  background: #641220;
+  color: #E8DDE0;
   font-weight: 600;
 }
+
 .streak-table tr:nth-child(even) td {
-  background: #fafbfc;
+  background: #211317;
+  color: #E8DDE0;
 }
+
+.streak-table tr:nth-child(odd) td {
+  background: #100B0D;
+  color: #E8DDE0;
+}
+
 
 /* ============================================================
    GATE LOG & SLEEP — data tables
@@ -882,3 +892,34 @@ td[data-action="numeric-click"]:not(.cell-future):not(.cell-pre-creation):hover 
     max-width: 100%;
   }
 }
+
+/* Daily motivational quote */
+
+#daily-quote {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 20px;
+  margin-top: -50px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+}
+
+#daily-quote .quote-text {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 600;
+   color: var(--quote-text);
+}
+
+#daily-quote .quote-subtext {
+  margin: 0;
+  font-size: 13px;
+  color: var(--quote-subtext);
+}
+
